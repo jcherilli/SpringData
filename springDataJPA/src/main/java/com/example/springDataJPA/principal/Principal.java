@@ -1,10 +1,19 @@
 package com.example.springDataJPA.principal;
 
+import com.example.springDataJPA.model.Artista;
+import com.example.springDataJPA.model.TipoArtista;
+import com.example.springDataJPA.repository.ArtistaRepository;
+
 import java.util.Scanner;
 
 public class Principal {
 
+    private final ArtistaRepository repositorio;
     private Scanner leitura = new Scanner(System.in);
+
+    public Principal(ArtistaRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
     public void exibeMenu() {
         var opcao = -1;
@@ -64,5 +73,12 @@ public class Principal {
     }
 
     private void cadastrarArtistas() {
+        System.out.println("Informe o nome desse artista: ");
+        var nome = leitura.nextLine();
+        System.out.println("Informe o tipo desse artista: (solo, dupla ou banda)");
+        var tipo = leitura.nextLine();
+        TipoArtista tipoArtista = TipoArtista.valueOf(tipo.toUpperCase());
+        Artista artista = new Artista(nome, tipoArtista);
+        repositorio.save(artista);
     }
 }
